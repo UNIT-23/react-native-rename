@@ -1,14 +1,14 @@
 // nS - No Space
 // lC - Lowercase
 
-export function filesToModifyContent(currentAppName, newName) {
+export function filesToModifyContent(currentAppName, newName, displayName) {
   const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
   const nS_NewName = newName.replace(/\s/g, '');
 
   return [
     {
       regex: `<string name="app_name">${currentAppName}</string>`,
-      replacement: `<string name="app_name">${newName}</string>`,
+      replacement: `<string name="app_name">${displayName}</string>`,
       paths: ['android/app/src/main/res/values/strings.xml'],
     },
     {
@@ -37,7 +37,7 @@ export function filesToModifyContent(currentAppName, newName) {
     },
     {
       regex: currentAppName,
-      replacement: newName,
+      replacement: displayName,
       paths: [`ios/${nS_NewName}/Info.plist`],
     },
     {
@@ -47,7 +47,7 @@ export function filesToModifyContent(currentAppName, newName) {
     },
     {
       regex: `"displayName": "${currentAppName}"`,
-      replacement: `"displayName": "${newName}"`,
+      replacement: `"displayName": "${displayName}"`,
       paths: ['app.json'],
     },
   ];

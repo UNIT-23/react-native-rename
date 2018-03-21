@@ -10,6 +10,7 @@ import program from 'commander';
 import replace from 'node-replace';
 import shell from 'shelljs';
 import pjson from '../package.json';
+import appjson from '../app.json';
 import path from 'path';
 import { foldersAndFiles } from './config/foldersAndFiles';
 import { filesToModifyContent } from './config/filesToModifyContent';
@@ -66,7 +67,8 @@ const cleanBuilds = () => {
 readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
   .then(data => {
     const $ = cheerio.load(data);
-    const currentAppName = $('string[name=app_name]').text();
+    // const currentAppName = $('string[name=app_name]').text();
+    const currentAppName = appjson.name;
     const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
     const lC_Ns_CurrentAppName = nS_CurrentAppName.toLowerCase();
 
@@ -74,14 +76,16 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
       .version('2.2.2')
       .arguments('<newName>')
       .option('-b, --bundleID [value]', 'Set custom bundle identifier eg. "com.junedomingo.travelapp"')
+      .option('-d, --displayName [value]', 'Set custom display name eg. "travelapp"')
       .action(newName => {
         const nS_NewName = newName.replace(/\s/g, '');
         const pattern = /^([0-9]|[a-z])+([0-9a-z\s]+)$/i;
         const lC_Ns_NewAppName = nS_NewName.toLowerCase();
         const bundleID = program.bundleID ? program.bundleID.toLowerCase() : null;
+        const displayName = program.displayName ? program.displayName.toLowerCase() : null;
         let newBundlePath;
         const listOfFoldersAndFiles = foldersAndFiles(currentAppName, newName);
-        const listOfFilesToModifyContent = filesToModifyContent(currentAppName, newName, projectName);
+        const listOfFilesToModifyContent = filesToModifyContent(currentAppName, newName, displayName);
 
         if (bundleID) {
           newBundlePath = bundleID.replace(/\./g, '/');
