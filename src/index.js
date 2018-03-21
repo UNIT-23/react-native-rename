@@ -172,7 +172,7 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
               const javaFileBase = '/android/app/src/main/java';
               const newJavaPath = `${javaFileBase}/${newBundleID.replace(/\./g, '/')}`;
               const currentJavaPath = `${javaFileBase}/${currentBundleID.replace(/\./g, '/')}`;
-              const javaFiles = [`MainActivity.java`, `MainApplication.java`];
+              const javaFiles = [`MainActivity.java`, `MainApplication.java`, `SplashActivity.java`];
 
               if (bundleID) {
                 newBundlePath = newJavaPath;
