@@ -10,7 +10,6 @@ import program from 'commander';
 import replace from 'node-replace';
 import shell from 'shelljs';
 import pjson from '../package.json';
-import appjson from '../app.json';
 import path from 'path';
 import { foldersAndFiles } from './config/foldersAndFiles';
 import { filesToModifyContent } from './config/filesToModifyContent';
@@ -68,7 +67,7 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
   .then(data => {
     const $ = cheerio.load(data);
     // const currentAppName = $('string[name=app_name]').text();
-    const currentAppName = appjson.name;
+    const currentAppName = require("../../app.json").name;
     const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
     const lC_Ns_CurrentAppName = nS_CurrentAppName.toLowerCase();
 
