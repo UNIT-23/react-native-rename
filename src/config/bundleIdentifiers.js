@@ -16,7 +16,11 @@ export function bundleIdentifiers(currentAppName, newName, projectName, currentB
     {
       regex: currentBundleID,
       replacement: newBundleID,
-      paths: [`${newBundlePath}/MainActivity.java`, `${newBundlePath}/MainApplication.java`],
+      paths: [
+        `${newBundlePath}/MainActivity.java`,
+        `${newBundlePath}/MainApplication.java`,
+        `${newBundlePath}/SplashActivity.java`,
+      ],
     },
     {
       regex: lC_Ns_CurrentBundleID,
@@ -27,6 +31,11 @@ export function bundleIdentifiers(currentAppName, newName, projectName, currentB
       regex: nS_CurrentAppName,
       replacement: nS_NewName,
       paths: [`${newBundlePath}/MainActivity.java`],
+    },
+    {
+      regex: nS_CurrentAppName,
+      replacement: nS_NewName,
+      paths: [`${newBundlePath}/SplashActivity.java`],
     },
   ];
 }
