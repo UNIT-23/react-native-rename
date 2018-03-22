@@ -1,14 +1,15 @@
 // nS - No Space
 // lC - Lowercase
 
-export function filesToModifyContent(currentAppName, newName, currentDisplayName, displayName) {
+export function filesToModifyContent(currentAppName, newName, currentDisplayName, newDisplayName) {
   const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
   const nS_NewName = newName.replace(/\s/g, '');
+  const escapedDisplayName = currentDisplayName.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
   return [
     {
-      regex: `<string name="app_name">${currentAppName}</string>`,
-      replacement: `<string name="app_name">${displayName}</string>`,
+      regex: `<string name="app_name">${escapedDisplayName}</string>`,
+      replacement: `<string name="app_name">${newDisplayName}</string>`,
       paths: ['android/app/src/main/res/values/strings.xml'],
     },
     {
@@ -26,8 +27,7 @@ export function filesToModifyContent(currentAppName, newName, currentDisplayName
         'android/settings.gradle',
         `ios/${nS_NewName}Tests/${nS_NewName}Tests.m`,
         'ios/build/info.plist',
-        'ios/Podfile',
-        'app.json',
+        'ios/Podfile'
       ],
     },
     {
@@ -36,8 +36,8 @@ export function filesToModifyContent(currentAppName, newName, currentDisplayName
       paths: [`ios/${nS_NewName}/Base.lproj/LaunchScreen.xib`],
     },
     {
-      regex: currentDisplayName,
-      replacement: displayName,
+      regex: escapedDisplayName,
+      replacement: newDisplayName,
       paths: [`ios/${nS_NewName}/Info.plist`],
     },
     {
@@ -46,8 +46,13 @@ export function filesToModifyContent(currentAppName, newName, currentDisplayName
       paths: ['package.json'],
     },
     {
-      regex: `"displayName": "${currentDisplayName}"`,
-      replacement: `"displayName": "${displayName}"`,
+      regex: `"name": "${currentAppName}"`,
+      replacement: `"name": "${newName}"`,
+      paths: ['app.json'],
+    },
+    {
+      regex: `"displayName": "${escapedDisplayName}"`,
+      replacement: `"displayName": "${newDisplayName}"`,
       paths: ['app.json'],
     },
   ];
