@@ -10,7 +10,7 @@
     "format": "prettier --write '**/*.{js,jsx}'",
     "lint": "eslint '**/*.{js,jsx}'",
     "react-native-rename": "babel-node src/index.js",
-    "buildSrc": "npx babel src --out-dir lib"
+    "build": "npx babel src --out-dir lib"
   },
   "lint-staged": {
     "**/*.js": [
