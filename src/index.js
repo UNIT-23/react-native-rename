@@ -10,6 +10,7 @@ import program from 'commander';
 import replace from 'node-replace';
 import shell from 'shelljs';
 import pjson from '../package.json';
+import appNames from '../../../app.json';
 import path from 'path';
 import { foldersAndFiles } from './config/foldersAndFiles';
 import { filesToModifyContent } from './config/filesToModifyContent';
@@ -67,7 +68,6 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
   .then(data => {
     const $ = cheerio.load(data);
     // const currentAppName = $('string[name=app_name]').text();
-    const appNames = require('../../../app.json');
     const currentAppName = appNames.name;
     const currentDisplayName = appNames.displayName;
     const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
@@ -83,14 +83,14 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
         const pattern = /^([0-9]|[a-z])+([0-9a-z\s]+)$/i;
         const lC_Ns_NewAppName = nS_NewName.toLowerCase();
         const bundleID = program.bundleID ? program.bundleID.toLowerCase() : null;
-        const displayName = program.displayName || newName;
+        const newDisplayName = program.displayName || newName;
         let newBundlePath;
         const listOfFoldersAndFiles = foldersAndFiles(currentAppName, newName);
         const listOfFilesToModifyContent = filesToModifyContent(
           currentAppName,
           newName,
           currentDisplayName,
-          displayName
+          newDisplayName
         );
 
         if (bundleID) {
