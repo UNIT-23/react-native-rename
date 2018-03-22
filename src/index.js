@@ -67,7 +67,9 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
   .then(data => {
     const $ = cheerio.load(data);
     // const currentAppName = $('string[name=app_name]').text();
-    const currentAppName = require('../../../app.json').name;
+    const appNames = require('../../../app.json');
+    const currentAppName = appNames.name;
+    const currentDisplayName = appNames.displayName;
     const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
     const lC_Ns_CurrentAppName = nS_CurrentAppName.toLowerCase();
 
@@ -84,7 +86,12 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
         const displayName = program.displayName || newName;
         let newBundlePath;
         const listOfFoldersAndFiles = foldersAndFiles(currentAppName, newName);
-        const listOfFilesToModifyContent = filesToModifyContent(currentAppName, newName, displayName);
+        const listOfFilesToModifyContent = filesToModifyContent(
+          currentAppName,
+          newName,
+          currentDisplayName,
+          displayName
+        );
 
         if (bundleID) {
           newBundlePath = bundleID.replace(/\./g, '/');

@@ -1,7 +1,7 @@
 // nS - No Space
 // lC - Lowercase
 
-export function filesToModifyContent(currentAppName, newName, displayName) {
+export function filesToModifyContent(currentAppName, newName, currentDisplayName, displayName) {
   const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
   const nS_NewName = newName.replace(/\s/g, '');
 
@@ -36,7 +36,7 @@ export function filesToModifyContent(currentAppName, newName, displayName) {
       paths: [`ios/${nS_NewName}/Base.lproj/LaunchScreen.xib`],
     },
     {
-      regex: currentAppName,
+      regex: currentDisplayName,
       replacement: displayName,
       paths: [`ios/${nS_NewName}/Info.plist`],
     },
@@ -46,7 +46,7 @@ export function filesToModifyContent(currentAppName, newName, displayName) {
       paths: ['package.json'],
     },
     {
-      regex: `"displayName": "${currentAppName}"`,
+      regex: `"displayName": "${currentDisplayName}"`,
       replacement: `"displayName": "${displayName}"`,
       paths: ['app.json'],
     },
