@@ -10,7 +10,7 @@ import program from 'commander';
 import replace from 'node-replace';
 import shell from 'shelljs';
 import pjson from '../package.json';
-import appNames from '../../../app.json';
+import appNames from '../../app.json';
 import path from 'path';
 import { foldersAndFiles } from './config/foldersAndFiles';
 import { filesToModifyContent } from './config/filesToModifyContent';
@@ -66,7 +66,7 @@ const cleanBuilds = () => {
 
 readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
   .then(data => {
-    const $ = cheerio.load(data);
+    // const $ = cheerio.load(data);
     // const currentAppName = $('string[name=app_name]').text();
     const currentAppName = appNames.name;
     const currentDisplayName = appNames.displayName;
@@ -156,16 +156,21 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
               file.paths.map((filePath, index) => {
                 let itemsProcessed = 0;
                 const newPaths = [];
+                itemsProcessed += index;
 
                 if (fs.existsSync(path.join(__dirname, filePath))) {
                   newPaths.push(path.join(__dirname, filePath));
                   setTimeout(() => {
-                    itemsProcessed += index;
                     replaceContent(file.regex, file.replacement, newPaths);
-                    if (itemsProcessed === filePathsCount - 1) {
+
+                    if (itemsProcessed === filePathsCount) {
                       resolve();
                     }
                   }, 200 * index);
+                } else {
+                  if (itemsProcessed === filePathsCount) {
+                    resolve();
+                  }
                 }
               });
             });
@@ -250,17 +255,23 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
 
               file.paths.map((filePath, index) => {
                 const newPaths = [];
+                itemsProcessed += index;
+
                 if (fs.existsSync(path.join(__dirname, filePath))) {
                   newPaths.push(path.join(__dirname, filePath));
 
                   setTimeout(() => {
-                    itemsProcessed += index;
                     replaceContent(file.regex, file.replacement, newPaths);
                     if (itemsProcessed === filePathsCount + 1) {
                       const oldBundleNameDir = path.join(__dirname, javaFileBase, currentBundleID);
                       resolve(oldBundleNameDir);
                     }
                   }, 200 * index);
+                } else {
+                  if (itemsProcessed === filePathsCount + 1) {
+                    const oldBundleNameDir = path.join(__dirname, javaFileBase, currentBundleID);
+                    resolve(oldBundleNameDir);
+                  }
                 }
               });
             });
