@@ -256,7 +256,7 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
                   setTimeout(() => {
                     itemsProcessed += index;
                     replaceContent(file.regex, file.replacement, newPaths);
-                    if (itemsProcessed === filePathsCount) {
+                    if (itemsProcessed === filePathsCount + 1) {
                       const oldBundleNameDir = path.join(__dirname, javaFileBase, currentBundleID);
                       resolve(oldBundleNameDir);
                     }
