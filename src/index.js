@@ -10,7 +10,7 @@ import program from 'commander';
 import replace from 'node-replace';
 import shell from 'shelljs';
 import pjson from '../package.json';
-import appNames from '../../app.json';
+import appNames from '../../../app.json';
 import path from 'path';
 import { foldersAndFiles } from './config/foldersAndFiles';
 import { filesToModifyContent } from './config/filesToModifyContent';
