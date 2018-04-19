@@ -65,7 +65,7 @@ const cleanBuilds = () => {
 };
 
 readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
-  .then(data => {
+  .then(() => {
     // const $ = cheerio.load(data);
     // const currentAppName = $('string[name=app_name]').text();
     const currentAppName = appNames.name;
