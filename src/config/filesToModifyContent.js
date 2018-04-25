@@ -1,7 +1,16 @@
 // nS - No Space
 // lC - Lowercase
 
-export function filesToModifyContent(currentAppName, newName, currentDisplayName, newDisplayName) {
+export function filesToModifyContent(
+  currentAppName,
+  newName,
+  currentDisplayName,
+  newDisplayName,
+  oldNavigationBarColor,
+  navigationBarColor,
+  oldStatusBarColor,
+  statusBarColor
+) {
   const nS_CurrentAppName = currentAppName.replace(/\s/g, '');
   const nS_NewName = newName.replace(/\s/g, '');
   const escapedDisplayName = currentDisplayName.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -11,6 +20,16 @@ export function filesToModifyContent(currentAppName, newName, currentDisplayName
       regex: `<string name="app_name">${escapedDisplayName}</string>`,
       replacement: `<string name="app_name">${newDisplayName}</string>`,
       paths: ['android/app/src/main/res/values/strings.xml'],
+    },
+    {
+      regex: `<color name="navigation_bar_color">${oldNavigationBarColor}</color>`,
+      replacement: `<color name="navigation_bar_color">${navigationBarColor}</color>`,
+      paths: ['android/app/src/main/res/values/styles.xml'],
+    },
+    {
+      regex: `<color name="status_bar_color">${oldStatusBarColor}</color>`,
+      replacement: `<color name="status_bar_color">${statusBarColor}</color>`,
+      paths: ['android/app/src/main/res/values/styles.xml'],
     },
     {
       regex: nS_CurrentAppName,

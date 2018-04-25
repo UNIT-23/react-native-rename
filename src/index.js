@@ -78,19 +78,36 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
       .arguments('<newName>')
       .option('-b, --bundleID [value]', 'Set custom bundle identifier eg. "com.junedomingo.travelapp"')
       .option('-d, --displayName [value]', 'Set custom display name eg. "travelapp"')
+      .option(
+        '-c, --colors [value]',
+        'Set custom colors for android NavigationBar and StatusBar name eg. "#ffffff#222222" old color then new color in hex'
+      )
       .action(newName => {
         const nS_NewName = newName.replace(/\s/g, '');
         const pattern = /^([0-9]|[a-z])+([0-9a-z\s]+)$/i;
         const lC_Ns_NewAppName = nS_NewName.toLowerCase();
         const bundleID = program.bundleID ? program.bundleID.toLowerCase() : null;
         const newDisplayName = program.displayName || newName;
+
+        //colors
+        const colorsStr = program.colors || '#ffffff#ffffff';
+        const colors = colorsStr.split('#');
+        const oldNavigationBarColor = colors[1] || '';
+        const navigationBarColor = colors[2] || '';
+        const oldStatusBarColor = colors[3] || '';
+        const statusBarColor = colors[4] || '';
+
         let newBundlePath;
         const listOfFoldersAndFiles = foldersAndFiles(currentAppName, newName);
         const listOfFilesToModifyContent = filesToModifyContent(
           currentAppName,
           newName,
           currentDisplayName,
-          newDisplayName
+          newDisplayName,
+          oldNavigationBarColor,
+          navigationBarColor,
+          oldStatusBarColor,
+          statusBarColor
         );
 
         if (bundleID) {
