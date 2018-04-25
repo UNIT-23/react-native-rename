@@ -17,8 +17,8 @@ export function filesToModifyContent(
 
   return [
     {
-      regex: `<string name="app_name">${escapedDisplayName}</string>`,
-      replacement: `<string name="app_name">${newDisplayName}</string>`,
+      regex: `<string name="app_name">#${escapedDisplayName}</string>`,
+      replacement: `<string name="app_name">#${newDisplayName}</string>`,
       paths: ['android/app/src/main/res/values/strings.xml'],
     },
     {
