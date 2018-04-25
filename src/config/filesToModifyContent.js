@@ -17,18 +17,18 @@ export function filesToModifyContent(
 
   return [
     {
-      regex: `<string name="app_name">#${escapedDisplayName}</string>`,
-      replacement: `<string name="app_name">#${newDisplayName}</string>`,
+      regex: `<string name="app_name">${escapedDisplayName}</string>`,
+      replacement: `<string name="app_name">${newDisplayName}</string>`,
       paths: ['android/app/src/main/res/values/strings.xml'],
     },
     {
-      regex: `<color name="navigation_bar_color">${oldNavigationBarColor}</color>`,
-      replacement: `<color name="navigation_bar_color">${navigationBarColor}</color>`,
+      regex: `<color name="navigation_bar_color">#${oldNavigationBarColor}</color>`,
+      replacement: `<color name="navigation_bar_color">#${navigationBarColor}</color>`,
       paths: ['android/app/src/main/res/values/styles.xml'],
     },
     {
-      regex: `<color name="status_bar_color">${oldStatusBarColor}</color>`,
-      replacement: `<color name="status_bar_color">${statusBarColor}</color>`,
+      regex: `<color name="status_bar_color">#${oldStatusBarColor}</color>`,
+      replacement: `<color name="status_bar_color">#${statusBarColor}</color>`,
       paths: ['android/app/src/main/res/values/styles.xml'],
     },
     {

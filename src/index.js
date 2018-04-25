@@ -79,7 +79,7 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
       .option('-b, --bundleID [value]', 'Set custom bundle identifier eg. "com.junedomingo.travelapp"')
       .option('-d, --displayName [value]', 'Set custom display name eg. "travelapp"')
       .option(
-        '-c, --colors [value]',
+        '-c, --androidColors [value]',
         'Set custom colors for android NavigationBar and StatusBar name eg. "#ffffff#222222" old color then new color in hex'
       )
       .action(newName => {
@@ -90,12 +90,12 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
         const newDisplayName = program.displayName || newName;
 
         //colors
-        const colorsStr = program.colors || '#ffffff#ffffff';
-        const colors = colorsStr.split('#');
-        const oldNavigationBarColor = colors[1] || '';
-        const navigationBarColor = colors[2] || '';
-        const oldStatusBarColor = colors[3] || '';
-        const statusBarColor = colors[4] || '';
+        const androidColorsStr = program.androidColors || '#ffffff#ffffff';
+        const androidColors = androidColorsStr.split('#');
+        const oldNavigationBarColor = androidColors[1] || '';
+        const navigationBarColor = androidColors[2] || '';
+        const oldStatusBarColor = androidColors[3] || '';
+        const statusBarColor = androidColors[4] || '';
 
         let newBundlePath;
         const listOfFoldersAndFiles = foldersAndFiles(currentAppName, newName);
@@ -259,39 +259,34 @@ readFile(path.join(__dirname, 'android/app/src/main/res/values/strings.xml'))
             let filePathsCount = 0;
             const { currentBundleID, newBundleID, newBundlePath, javaFileBase } = params;
 
-            bundleIdentifiers(
-              currentAppName,
-              newName,
-              projectName,
-              currentBundleID,
-              newBundleID,
-              newBundlePath
-            ).map(file => {
-              filePathsCount += file.paths.length - 1;
-              let itemsProcessed = 0;
+            bundleIdentifiers(currentAppName, newName, projectName, currentBundleID, newBundleID, newBundlePath).map(
+              file => {
+                filePathsCount += file.paths.length - 1;
+                let itemsProcessed = 0;
 
-              file.paths.map((filePath, index) => {
-                const newPaths = [];
-                itemsProcessed += index;
+                file.paths.map((filePath, index) => {
+                  const newPaths = [];
+                  itemsProcessed += index;
 
-                if (fs.existsSync(path.join(__dirname, filePath))) {
-                  newPaths.push(path.join(__dirname, filePath));
+                  if (fs.existsSync(path.join(__dirname, filePath))) {
+                    newPaths.push(path.join(__dirname, filePath));
 
-                  setTimeout(() => {
-                    replaceContent(file.regex, file.replacement, newPaths);
+                    setTimeout(() => {
+                      replaceContent(file.regex, file.replacement, newPaths);
+                      if (itemsProcessed === filePathsCount + 1) {
+                        const oldBundleNameDir = path.join(__dirname, javaFileBase, currentBundleID);
+                        resolve(oldBundleNameDir);
+                      }
+                    }, 200 * index);
+                  } else {
                     if (itemsProcessed === filePathsCount + 1) {
                       const oldBundleNameDir = path.join(__dirname, javaFileBase, currentBundleID);
                       resolve(oldBundleNameDir);
                     }
-                  }, 200 * index);
-                } else {
-                  if (itemsProcessed === filePathsCount + 1) {
-                    const oldBundleNameDir = path.join(__dirname, javaFileBase, currentBundleID);
-                    resolve(oldBundleNameDir);
                   }
-                }
-              });
-            });
+                });
+              }
+            );
           });
 
         const rename = () => {
